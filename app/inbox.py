@@ -18,7 +18,11 @@ def getDB():
 def show():
     db = get_db()
     messages = db.execute(
-        ""
+        "select user.username, message.subject, messange.body, message.created"
+        "from message"
+        "join user on user.id=message.from_id"
+        "where message.to_id = ?", (g.user["id"],)
+        
     ).fetchall()
 
     return render_template('inbox/send.html', messages=messages)
